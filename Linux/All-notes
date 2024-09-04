@@ -6,7 +6,7 @@ ls --help
 clear
 ls --all / ls -a (same thing)
 ls -l --all / ls -l -a / ls -la (same  thing)
-
+-
 MAN COMMAND ("manual" page)
 man ls (displays all parameters with detailed definition)
 
@@ -57,3 +57,41 @@ ln (file) (new file)
 ln -s file.txt link.txt
 - Links ln command that is used for linking files and directories to each other. ln command allows any number of new names to be created, all pointing to the same file or directory. You can then use any of these names to operate with the original file's data.
 - meaning if u delete file.txt, the content in link.txt will also get deleted.
+
+04/09/2024
+
+less (Like cat but better)
+   - cat prints all in the file
+    - less only prints that fits on the first page (shows less)
+head -10 words.txt (prints 10 words)
+tail -15 words.txt (prints the last 15 words)
+wc words.txt (word count)
+  - how many lines, words, characters (in order)
+
+| - called as a pipeline, like modifies.
+
+grep a sentences.txt
+  - print all words that has the letter a in sentences.txt
+  - case sensitive meaning if what you capitalize, it will also follow.
+
+grep do sentences.txt | grep you
+  - prints all words that has do you regardless if it has a "-".
+
+ls -la *.conf
+  - shows all the file that has .conf
+
+Regular Expressions
+[a-z]
+  - finds the words with atleast 1 of a to z letters in the word.
+[a-z]{6,10]
+  - From A to z from the characters that has 6 characters and then if it reach 10 characters then it highlights or chooses that.
+[^abc]
+  - anything aside a,b and c.
+^ 
+  - start of the string
+$
+  - end of the string
+[A-z0-9]+.(jpg|png|bmp|svg)
+- finds the words that has A-z (capital or not), with numbers or not +. that is a jpeg,png, bmp or svg file.
+[A-z0-9_-]+@[a-z]+.+
+- finds the email address wether it be @domain.com or @usc.edu.ph
