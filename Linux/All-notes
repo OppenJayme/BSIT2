@@ -58,6 +58,8 @@ ln -s file.txt link.txt
 - Links ln command that is used for linking files and directories to each other. ln command allows any number of new names to be created, all pointing to the same file or directory. You can then use any of these names to operate with the original file's data.
 - meaning if u delete file.txt, the content in link.txt will also get deleted.
 
+pwd - display your current location or working directory
+  - print working directory
 04/09/2024
 
 less (Like cat but better)
@@ -95,3 +97,92 @@ $
 - finds the words that has A-z (capital or not), with numbers or not +. that is a jpeg,png, bmp or svg file.
 [A-z0-9_-]+@[a-z]+.+
 - finds the email address wether it be @domain.com or @usc.edu.ph
+
+9/7/2024
+history 
+   - shows all history of commands executed.
+!-n
+- executes the nTH command from the bottom of the history list
+date
+- shows the date today
+cal 8 2025
+- shows the 8th month (august) and the corresponding days in 2025.
+!!
+- executes the most recent command
+!cal
+- execute the most recent iteration of a specific command (for example cal 8 2025 was called earlier, so it will execute that automatically).
+
+Local variables
+- exists only in the shell/terminal, if closed all variables get deleted.
+example
+variable1='Something'
+The echo command is used to display output in the terminal. 
+To display the value of the variable, use a dollar sign $ character followed by the variable name as an argument to the echo command:
+echo $variable1 
+- this would output Something
+
+The type command can be used to determine information about command type.
+- type command
+- internal commands
+  - builtin commands in the shell itself.
+- external commands
+  - The which command searches for the location of a command by searching the PATH variable.
+  - which nano
+    - output should be where the nano command is
+
+alias
+- make longer commands shorter
+- example: ls -l is shorted with ll or l
+
+Functions
+you can also create functions
+- more advanced thn the alias
+function_name () 
+{
+   commands
+}
+- used to execute a set of commands at once
+
+Quoting
+glob charcters
+- wildcards
+- *, ?, []
+- double quotes 
+  - asterisk is just an asterisk, a question mark is just a question mark, and so on, which is useful when you want to display something on the screen that is normally a special character to the shell.
+  - Double quotes still allow for command substitution, variable substitution, and permit some other shell metacharacters
+- single quotes
+  - prevent the shell from doing any interpreting of special characters, including globs, variables, command substitution and other metacharacters
+  - For example, to make the $ character simply mean a $, rather than it acting as an indicator to the shell to look for the value of a variable, execute the second command displayed below:
+sysadmin@localhost:~$ echo The car costs $100                           
+The car costs 00                                                        
+sysadmin@localhost:~$ echo 'The car costs $100'                        
+The car costs $100
+- Backlash
+  - doubleqoutes, $1 and $PATH are considered as variables which means placing them in a double qoutes would execeute them
+  - inside a single quote, they are not considered as variables so they just printout the way they are.
+  - say you want $PATH treated as a virable and $1 not. You can use a \ or backslash
+sysadmin@localhost:~$ echo The service costs \$1 and the path is $PATH
+The service costs $1 and the path is /usr/bin/custom:/home/sysadmin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+backquotes
+- used to specify a command within a commnd called command subsitution
+- say u want to display date
+sysadmin@localhost:~$ echo Today is date                               
+Today is date
+- with the use of backquotes:
+sysadmin@localhost:~$ echo Today is `date`                         
+Today is Mon Nov 4 03:40:04 UTC 2018
+
+Control statements
+semicolon
+- used to run multiple commands one after the other.
+- cal 1 2023; cal 2 2023; cal 3 2023 would display those 3 months in their respective years.
+double ampersand 
+- command1 && command2
+- logical and if first command successful then second should
+- if first does not run then also the second
+double pipe
+- command1 || command2
+- if first command runs successfully, second command is skipped
+- if first command fails then the second command is run.
+- either run this first command or run the second one.
