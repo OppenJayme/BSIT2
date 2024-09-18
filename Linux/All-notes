@@ -186,3 +186,11 @@ double pipe
 - if first command runs successfully, second command is skipped
 - if first command fails then the second command is run.
 - either run this first command or run the second one.
+
+18/09/2024
+
+chmod - persmisisons
+rwx rwx rwx
+421 421 421
+
+TAR //tgz
