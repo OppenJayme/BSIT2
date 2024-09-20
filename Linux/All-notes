@@ -194,3 +194,32 @@ rwx rwx rwx
 421 421 421
 
 TAR //tgz
+
+20/09/2024
+
+locate 
+-  searches a database of all files and directories that were on the system when the database was created
+- finds any file or directory.
+- easy way to search for a file
+locate -c 
+- finds out how many files match
+locate -b
+- only includes listing that have the search term in the basename of the ffilename
+  - The basename is the portion of the filename not including the directory names.
+locate -c -b passwd
+- still many results
+to limit further... limit
+locate -b "\passwd"
+
+man -f psswd 
+- displays man pages that match or partially match, a name or section, for example there are three commands with the passwd command
+- is equal to the whatis command
+man -f copy
+- man page that isplayes how to copy directories.
+- searches both the names and descriptions of man  
+
+info command
+- provides documentation on operating system commands and features
+
+--help
+- basic information, useful to learn the basic usage of a command quickly without leaving the cli
