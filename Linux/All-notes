@@ -223,3 +223,43 @@ info command
 
 --help
 - basic information, useful to learn the basic usage of a command quickly without leaving the cli
+
+9/20/2024
+tar xzvf <zipfolder>.tgz          tgz => tar
+
+find -name test      => finds a file that contains word "test"
+
+find -name take | wc -l       => counts files that contains word take
+
+find -type l   => l - link  d => directory   f => file
+
+find -type d -empty  => finds directory that are empty
+
+find -type d -empty | wc -l   =>  counts empty directories
+
+find -type d -empty -exec rmdir {} \;  => " \; " end of command "{}" variable     // delets all the empty directories
+
+joe => write something on a file (same with nano)
+
+
+find -type f -perm 755      => finds the permission that has 755 (chmod)
+
+find -type f -exec   wc -l {} \;         => counts the lines on a file
+
+^^^^^^^^ | sort         => sorts lexographically  add -n for number
+
+
+find -type f -exec wc -l {} \; | sort -n | tail -1  =>  prints the last longest line
+
+du -s test     => prints the highest disk usage in kilobytes of the folder    (add b beside s for bytes)   
+
+
+find -type d -exec du -s {} \;       => finds the directories with bytes printed
+
+find -type f -exec file {} \; | grep -v "ASCII text"        => prints non ASCII text (-v) is negation
+
+tr 'a-z' 'A-Z' < words.txt          => (transalate) converts small letters to bigletters inside of the words.txt
+
+tr 'a-z' 'A-Z' < words.txt > file.txt       => transfers translated words.txt to file.txt
+
+bc -l        =>calculator
