@@ -263,3 +263,53 @@ tr 'a-z' 'A-Z' < words.txt          => (transalate) converts small letters to bi
 tr 'a-z' 'A-Z' < words.txt > file.txt       => transfers translated words.txt to file.txt
 
 bc -l        =>calculator
+
+09/25/2024
+top - shows sometihnig like task manager but more detailed
+
+ps - report a snapshot of preoccesses
+
+ps -ax - shows all procceses running
+	- PID (process id)
+	- time - how mcuh processor time it consumes
+ps -aux - shows owner of the process
+
+
+how many users are running processes?
+	- ps -aux | cut -d' ' -f4
+		- shows running on the 
+find -type f -printf "%s %u %p"
+
+ps -aux | awk '{ print $1 }'
+	- prints the the column depending on the $
+
+ps -aux | awk '{ print $1 }' | sort |
+	- sorts
+
+ps axo user:20 | sort
+- shows the full username if there is +
+
+
+ps axo user:20 | sort | uniq -c
+- shows the users 
+
+ps -aux | grep /usr/sbin | wc -l
+- counts how many proccesses in /usr/sbin
+
+ps ax | awk '{ if ($1 > 1000)  printf $1 }'
+	- shows the first column greater than 1000
+
+print how many files in test folder has more lines than 100
+
+find -type f -exec wc -l {} \; | awk '{if ($1>100) print $}0' or '$1>100'
+- prints the fiels htat has over 100 lines. 
+
+uniq 
+	- write each ones to only 1.
+
+find -type f -exec dirname {} \; | sort | uniq -c | awk '$1 == 3' | wc -l
+find -type f -exec dirname {} \; | sort | uniq -c | awk '$1 == 3' | wc -l
+- finds the files with atleast 3 ffolders in it
+
+find -type l -exec ls -l {} \; | awk '$5 >= 10' | wc -l
+- to find the folder that has greater than 10 bytes
