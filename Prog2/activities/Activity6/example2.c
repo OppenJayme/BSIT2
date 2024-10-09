@@ -73,9 +73,26 @@ int main() {
         
         switch(choice){
             case 1:
+                char title[50];
+                char author[50];
+                int year;
+                char ISBN[50];
                 
+                printf("Enter Title: ");
+                fgets(title, 50, stdin);
+                printf("Enter author: ");
+                fgets(author, 50, stdin);
+                printf("Enter year: ");
+                scanf("%d", &year);
+                printf("Enter ISBN: ");
+                scanf("%s", ISBN);
+                createBook(books, &size, title, author ,year , ISBN);
                 break;
-            
+            case 2:
+                char newISBN[50];
+                printf("Enter ISBN to find: ");
+                scanf("%s", newISBN);
+                
         }
     }
     createBook(books, &size, "The Great Gatsby", "F. Scott Fitzgerald", 1925, "9780743273565");
