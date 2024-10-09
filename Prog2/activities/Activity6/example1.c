@@ -63,16 +63,36 @@ while(1){
     printf("2. Delete Student by index.\n");
     printf("3. Read/Display students.\n");
     printf("4. Exit.\n");
+    int choice2;
+    printf("Enter option: ");
+    scanf("%d", &choice2);
+    
+    switch(choice2){
+        case 1: 
+            int index;
+            char newName[50];
+            int newAge;
+        
+            printf("Enter index of student: ");
+            scanf("%d", &index);
+            printf("Enter new name of student: ");
+            scanf("%s", newName);
+            printf("Enter new age: ");
+            scanf("%d", &newAge);
+            updateStudent(students, index, newName, newAge); 
+            break;
+        case 2:
+            int indexer;
+            printf("Enter index of student to delete: ");
+            scanf("%d", &indexer);
+            deleteStudent(students, &size, indexer); 
+        case 3: 
+            readStudents(students, size);
+        default:
+            printf("Invalid option");
+            break;
+    }
 }
 
-
-
-updateStudent(students, 1, "Bobby", 23); 
-printf("\nAfter Updating Bob's details:\n");
-readStudents(students, size);
-
-deleteStudent(students, &size, 0); 
-printf("\nAfter Deleting Alice:\n");
-readStudents(students, size);
 return 0;
 }
