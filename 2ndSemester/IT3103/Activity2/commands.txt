@@ -1,0 +1,2 @@
+npm init -y (both folders)
+npm install @prisma/client prisma apollo-server graphql sqlite3 (both folders)
