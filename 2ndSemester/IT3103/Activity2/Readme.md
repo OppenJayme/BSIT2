@@ -1,4 +1,4 @@
-Activity Instructions: Building Microservices with Database Migrations and GraphQL CRUD Endpoints
+## Activity Instructions: Building Microservices with Database Migrations and GraphQL CRUD Endpoints
 
 For this activity, you will create two microservices—"Users" and "Posts"—each with its own database. You’ll apply database migrations and set up GraphQL endpoints for CRUD operations. Complete the following requirements:
 
