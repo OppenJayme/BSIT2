@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "cors": "^2.8.5",
     "graphql": "^16.10.0",
+    "graphql-ws": "^6.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",

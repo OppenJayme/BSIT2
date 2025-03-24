@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, useMutation, useSubscription, gql, split, HttpLink } from "@apollo/client";
-import { WebSocketLink } from "@apollo/client/link/ws";
+import {GraphQLWsLink} from '@apollo/client/link/subscriptions'
+import { createClient } from 'graphql-ws';
 import { getMainDefinition } from "@apollo/client/utilities";
 import "./index.css";
 
@@ -16,14 +17,13 @@ const GET_POSTS = gql`
 `;
 
 const CREATE_POST = gql`
-  mutation CreatePost($title: String!, $content: String!, $userId: ID!) {
-    createPost(title: $title, content: $content, userId: $userId) {
-      id
-      title
-      content
-      userId
-    }
+mutation Mutation($title: String!, $content: String!) {
+  createPost(title: $title, content: $content) {
+    id
+    title
+    content
   }
+}
 `;
 
 const POST_ADDED = gql`
@@ -42,12 +42,16 @@ const httpLink = new HttpLink({
 });
 
 // Create a WebSocket link for subscriptions
-const wsLink = new WebSocketLink({
-  uri: "ws://localhost:4002/graphql",
-  options: {
-    reconnect: true,
-  },
-});
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4002/graphql',
+    on: {
+      connected: () => console.log('WebSocket connected'),
+      disconnected: () => console.log('WebSocket disconnected'),
+      error: (error) => console.log('WebSocket Error:', error),
+    },
+  })
+);
 
 // Split links based on operation type
 const splitLink = split(
@@ -76,18 +80,27 @@ const PostsTable = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    if (data) setPosts(data.posts);
+    try {
+      if (data) setPosts(data.posts);
+    } catch(err) {
+      if (err) throw new Error(err)
+    }
   }, [data]);
 
   useEffect(() => {
-    if (subscriptionData) {
-      setPosts((prevPosts) => [subscriptionData.postAdded, ...prevPosts]);
+    try {
+      if (subscriptionData) {
+        setPosts((prevPosts) => [subscriptionData.postAdded, ...prevPosts]);
+      }
+    } catch(err) {
+      if (err) throw new Error(err)
     }
   }, [subscriptionData]);
 
-  const handleCreatePost = async () => {
+  const handleCreatePost = async (e) => {
+    e.preventDefault(); // Prevent form submission from refreshing the page
     if (!title.trim() || !content.trim()) return;
-    await createPost({ variables: { title, content } });
+    await createPost({ variables: { title, content, userId: "1" } }); // Assuming a static userId
     setTitle("");
     setContent("");
   };
@@ -98,19 +111,23 @@ const PostsTable = () => {
   return (
     <div className="container">
       <h1>Posts</h1>
-      <div className="form">
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
-        />
-        <input
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Content"
-        />
-        <button onClick={handleCreatePost}>Create Post</button>
-      </div>
+      <form onSubmit={handleCreatePost}> {/* Added onSubmit to form */}
+        <div className="form">
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+            required // Optionally add validation
+          />
+          <input
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Content"
+            required // Optionally add validation
+          />
+          <button type="submit">Create Post</button> {/* Changed button type to submit */}
+        </div>
+      </form>
       <table>
         <thead>
           <tr>
