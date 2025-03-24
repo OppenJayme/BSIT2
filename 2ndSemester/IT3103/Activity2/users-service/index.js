@@ -1,5 +1,6 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql } = require("apollo-server-express");
 const { PrismaClient } = require("@prisma/client");
+const express = require("express");
 
 const prisma = new PrismaClient();
 
@@ -11,8 +12,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User] 
-    user(id: ID!): User 
+    users: [User]
+    user(id: ID!): User
   }
 
   type Mutation {
@@ -22,11 +23,13 @@ const typeDefs = gql`
   }
 `;
 
-
 const resolvers = {
   Query: {
     users: () => prisma.user.findMany(),
-    user: (_, { id }) => prisma.user.findUnique({ where: { id: Number(id) } }),
+    user: (_, { id }) => { 
+      const userIdToQuery = id || userId;
+      prisma.user.findUnique({ where: { id: Number(userIdToQuery) } });
+    },
   },
   Mutation: {
     createUser: (_, args) => prisma.user.create({ data: args }),
@@ -37,8 +40,29 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const app = express();
 
-server.listen({ port: 4000 }).then(({ url }) => {
-  console.log(`🚀 Users service running at ${url}`);
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    const userId = req.params.id ? Number(req.params.id) : null;
+    return { userId };
+  },
+});
+
+server.start().then(() => {
+  server.applyMiddleware({ app });
+
+  app.get("/", (req, res) => {
+    res.send("Admin Page");
+  });
+
+  app.get("/:id", (req, res) => {
+    res.send(`User Page for User ID: ${req.params.id}`);
+  });
+
+  app.listen({ port: 4000 }, () => {
+    console.log(`🚀 Users service running at http://localhost:4000${server.graphqlPath}`);
+  });
 });

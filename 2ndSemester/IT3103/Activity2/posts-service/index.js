@@ -9,6 +9,7 @@ import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { PubSub } from 'graphql-subscriptions';
 import { PrismaClient } from '@prisma/client';
+import cors from "cors";
 
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
@@ -40,16 +41,21 @@ const typeDefs = `
   }
 `;
 
-// graphql resolvers
+// GraphQL resolvers
 const resolvers = {
   Query: {
     posts: () => prisma.post.findMany(),
     post: (_, { id }) => prisma.post.findUnique({ where: { id: Number(id) } }),
   },
   Mutation: {
-    createPost: async (_, args) => {
-      const post = await prisma.post.create({ data: args });
-      pubsub.publish(POST_ADDED, { postAdded: post }); // 📢 Publish to subscription
+    createPost: async (_, { title, content }) => {
+      const post = await prisma.post.create({
+        data: { title, content },
+      });
+
+      // 📢 Publish post to subscriptions
+      pubsub.publish(POST_ADDED, { postAdded: post });
+
       return post;
     },
     updatePost: (_, { id, ...args }) =>
@@ -68,8 +74,9 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const app = express();
 const httpServer = createServer(app);
+app.use(cors({ origin: "http://localhost:3000" }));
 
-//WebSocket Server Setup
+// WebSocket Server Setup
 const wsServer = new WebSocketServer({
   server: httpServer,
   path: '/graphql',
@@ -80,10 +87,8 @@ const wsServerCleanup = useServer({ schema }, wsServer);
 const apolloServer = new ApolloServer({
   schema,
   plugins: [
-    // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
     {
-      // Proper shutdown for the WebSocket server.
       async serverWillStart() {
         return {
           async drainServer() {
