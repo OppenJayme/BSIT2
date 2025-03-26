@@ -54,15 +54,22 @@ const server = new ApolloServer({
 server.start().then(() => {
   server.applyMiddleware({ app });
 
-  app.get("/", (req, res) => {
-    res.send("Admin Page");
+  // Route to display a user page if the user exists
+  app.get("/:id", async (req, res) => {
+    const userId = parseInt(req.params.id); // Get the user ID from the URL
+    try {
+      const user = await prisma.user.findUnique({ where: { id: userId } }); // Query the database
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      // If user exists, show their details
+      res.send(`User Page for User ID: ${userId} <br> Name: ${user.name} <br> Email: ${user.email}`);
+    } catch (error) {
+      res.status(500).send("Error fetching user");
+    }
   });
 
-  app.get("/:id", (req, res) => {
-    res.send(`User Page for User ID: ${req.params.id}`);
-  });
-
-  app.listen({ port: 4000 }, () => {
-    console.log(`🚀 Users service running at http://localhost:4000${server.graphqlPath}`);
+  app.listen({ port: 8010 }, () => {
+    console.log(`🚀 Users service running at http://localhost:8010${server.graphqlPath}`);
   });
 });

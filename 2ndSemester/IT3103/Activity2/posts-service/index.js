@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const pubsub = new PubSub();
 const POST_ADDED = 'POST_ADDED';
 
-const port = 4002;
+const port = 4003;
 
 // GraphQL Schema
 const typeDefs = `
