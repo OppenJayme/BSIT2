@@ -21,7 +21,6 @@ const CREATE_POST = gql`
       id
       title
       content
-      userId
     }
   }
 `;
@@ -117,7 +116,6 @@ const PostsTable = () => {
             <th>ID</th>
             <th>Title</th>
             <th>Content</th>
-            <th>UserID</th>
           </tr>
         </thead>
         <tbody>
@@ -128,7 +126,6 @@ const PostsTable = () => {
                   <td>{post.id}</td>
                   <td>{post.title}</td>
                   <td>{post.content}</td>
-                  <td>{post.userId}</td>
                 </tr>
               ) : null
             ))

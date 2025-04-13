@@ -52,10 +52,10 @@ const resolvers = {
       const post = await prisma.post.create({
         data: { title, content },
       });
-
-      // 📢 Publish post to subscriptions
+  
+      // Publish the post to subscriptions
       pubsub.publish(POST_ADDED, { postAdded: post });
-
+  
       return post;
     },
     updatePost: (_, { id, ...args }) =>
