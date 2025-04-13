@@ -20,8 +20,8 @@ body, html {
 
 .primo{
   position: fixed; /* Stays in place even when scrolling */
-  height: 300px;
-  left: 62px;
+  height: 250px;
+  left: 85px;
   bottom: 0px;
   z-index: 100; /* Ensure it appears above other elements */
 }
