@@ -73,6 +73,8 @@ const PostsTable = () => {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const postsPerPage = 10; // Number of posts per page
 
   useEffect(() => {
     if (data) setPosts(data.posts);
@@ -91,10 +93,29 @@ const PostsTable = () => {
     setContent("");
   };
 
+  // Calculate the posts to display on the current page
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Handle page navigation
+  const nextPage = () => {
+    if (currentPage < Math.ceil(posts.length / postsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error loading posts.</p>;
 
   return (
+    
     <div className="container">
       <h1>Posts</h1>
       <div className="form">
@@ -119,8 +140,8 @@ const PostsTable = () => {
           </tr>
         </thead>
         <tbody>
-          {posts.length > 0 ? (
-            posts.map((post) => (
+          {currentPosts.length > 0 ? (
+            currentPosts.map((post) => (
               post ? (
                 <tr key={post.id}>
                   <td>{post.id}</td>
@@ -136,6 +157,20 @@ const PostsTable = () => {
           )}
         </tbody>
       </table>
+      <div className="pagination">
+        <button onClick={prevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {Math.ceil(posts.length / postsPerPage)}
+        </span>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(posts.length / postsPerPage)}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
@@ -143,9 +178,19 @@ const PostsTable = () => {
 const App = () => (
   <ApolloProvider client={client}>
     <div className="app">
+      <img
+        className="character"
+        src="https://www.pngall.com/wp-content/uploads/15/Xiao-PNG-Images.png"
+        alt="Character"
+      />
+      <img
+        className="primo"
+        src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/600cc6ca-4f52-40e6-a83c-3bcd6e94e0ee/depbq7u-8d5c23aa-8eeb-435f-89c5-a87238cb052d.png"
+        alt="Primogems"/>
       <PostsTable />
     </div>
   </ApolloProvider>
 );
 
 export default App;
+

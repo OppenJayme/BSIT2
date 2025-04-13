@@ -1,26 +1,52 @@
-body {
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./zh-cn.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body, html {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
-  margin: 0;
+  margin: 100px;
   padding: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: url('https://wallpapers.com/images/high/genshin-impact-liyue-harbor-night-scene-d3jpc6k8uq4f269k.webp') no-repeat center center fixed;
+  background-size: cover;
+  
+}
+
+.primo{
+  position: fixed; /* Stays in place even when scrolling */
+  height: 300px;
+  left: 62px;
+  bottom: 0px;
+  z-index: 100; /* Ensure it appears above other elements */
+}
+.character {
+  position: fixed; /* Stays in place even when scrolling */
+  height: 700px;
+  left: 1300px;
+  bottom: 0px;
+  z-index: 100; /* Ensure it appears above other elements */
 }
 
 .container {
-  background: white;
-  padding: 20px;
+  background: transparent;
+  padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 30);
+  width: 100%; 
+  height: 100%;
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #ffffff;
+  font-family: 'CustomFont', Arial, sans-serif;
+  font-size: 40px;
 }
 
 .form {
@@ -32,12 +58,14 @@ h1 {
 .form input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #dfe223;
   border-radius: 4px;
+  font-family: 'CustomFont', Arial, sans-serif;
+  font-size: 16px;
 }
 
 .form button {
-  background-color: #007bff;
+  background-color: #da7212;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -46,31 +74,35 @@ h1 {
 }
 
 .form button:hover {
-  background-color: #0056b3;
+  background-color: #99520f;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: rgb(252, 252, 252);
+  opacity: 80%;
 }
 
 table, th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #000000;
 }
 
 th, td {
   padding: 10px;
   text-align: left;
+  font-family: 'CustomFont', Arial, sans-serif;
+  font-size: 16px;
 }
 
 th {
-  background-color: #007bff;
+  background-color: #da7212;
   color: white;
+
 }
 
 tr:hover {
-  background-color: #f1f1f1;
+  background-color: #8d8d8d;
 }
 
 .loading {
@@ -81,4 +113,33 @@ tr:hover {
 .error {
   text-align: center;
   color: red;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  background-color: #da7212;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'CustomFont', Arial, sans-serif;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 30px;
+  color: #ffffff;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
