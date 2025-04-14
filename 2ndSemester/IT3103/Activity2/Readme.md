@@ -49,7 +49,6 @@ How does GraphQL differ from REST for CRUD operations?
 - Message queue system used RabbitMQ
 - Fixed websocket subprotocol Mismatch
    - ws is using graphql-ws which uses the graphql-transport-ws but the frontend is using subscriptions-transport-ws.
-   - 
 - Real-time update fixed
 - Fixed the UseEffect for subscriptions data in frontend
 - Fixed the handlecreatePost function in the frontend
