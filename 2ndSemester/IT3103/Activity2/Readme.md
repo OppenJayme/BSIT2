@@ -44,3 +44,13 @@ How does GraphQL differ from REST for CRUD operations?
   - @2.0.0 keeps the asyncIterator function working.
 - graphql-ws@5.9.1
   - The reason for this is because the useServer function is not being used/removed at the earliest versions of the websocket.
+
+## new Update Act 10
+- Message queue system used RabbitMQ
+- Fixed websocket subprotocol Mismatch
+   - ws is using graphql-ws which uses the graphql-transport-ws but the frontend is using subscriptions-transport-ws.
+   - 
+- Real-time update fixed
+- Fixed the UseEffect for subscriptions data in frontend
+- Fixed the handlecreatePost function in the frontend
+- added debugging logs

@@ -84,10 +84,12 @@ const PostsTable = () => {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const postsPerPage = 10; // Number of posts per page
 
+  // Load initial posts from the query
   useEffect(() => {
     if (data) setPosts(data.posts);
   }, [data]);
 
+  // Handle real-time updates from the subscription
   useEffect(() => {
     if (subscriptionData) {
       console.log("Subscription data received:", subscriptionData);
@@ -98,6 +100,7 @@ const PostsTable = () => {
         }
         return [newPost, ...prevPosts];
       });
+      setCurrentPage(1); // Reset to the first page when a new post is added
     } else {
       console.log("No subscription data received");
     }
@@ -105,10 +108,10 @@ const PostsTable = () => {
 
   const handleCreatePost = async () => {
     if (!title.trim() || !content.trim()) return;
-  
-    const newPost = { id: Date.now().toString(), title, content }; 
-    setPosts((prevPosts) => [newPost, ...prevPosts]); 
-  
+
+    const newPost = { id: Date.now().toString(), title, content };
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+
     try {
       await createPost({ variables: { title, content } });
     } catch (error) {
@@ -116,7 +119,7 @@ const PostsTable = () => {
       // Rollback the optimistic update if the mutation fails
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== newPost.id));
     }
-  
+
     setTitle("");
     setContent("");
   };
@@ -143,7 +146,6 @@ const PostsTable = () => {
   if (error) return <p className="error">Error loading posts.</p>;
 
   return (
-    
     <div className="container">
       <h1>Posts</h1>
       <div className="form">
