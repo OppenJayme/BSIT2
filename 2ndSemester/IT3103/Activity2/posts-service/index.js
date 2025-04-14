@@ -11,6 +11,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { PrismaClient } from '@prisma/client';
 import cors from "cors";
 
+
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
 const POST_ADDED = 'POST_ADDED';
@@ -54,7 +55,8 @@ const resolvers = {
       });
   
       // Publish the post to subscriptions
-      pubsub.publish(POST_ADDED, { postAdded: post });
+      console.log("Publishing postAdded event:", post);
+      pubsub.publish("POST_ADDED", { postAdded: post });
   
       return post;
     },

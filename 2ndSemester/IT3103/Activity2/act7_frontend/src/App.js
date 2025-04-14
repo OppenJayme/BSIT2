@@ -3,6 +3,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, useMutation, use
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import "./index.css";
+import { createClient } from 'graphql-ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 
 // GraphQL Queries & Mutations
 const GET_POSTS = gql`
@@ -41,12 +43,18 @@ const httpLink = new HttpLink({
 });
 
 // Create a WebSocket link for subscriptions
-const wsLink = new WebSocketLink({
-  uri: "ws://localhost:4002/graphql",
-  options: {
-    reconnect: true,
-  },
-});
+// const wsLink = new WebSocketLink({
+//   uri: "ws://localhost:4002/graphql",
+//   options: {
+//     reconnect: true,
+//   },
+// });
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4002/graphql',
+    retryAttempts: 5, 
+  })
+);
 
 // Split links based on operation type
 const splitLink = split(
@@ -82,13 +90,33 @@ const PostsTable = () => {
 
   useEffect(() => {
     if (subscriptionData) {
-      setPosts((prevPosts) => [subscriptionData.postAdded, ...prevPosts]);
+      console.log("Subscription data received:", subscriptionData);
+      setPosts((prevPosts) => {
+        const newPost = subscriptionData.postAdded;
+        if (prevPosts.some((post) => post.id === newPost.id)) {
+          return prevPosts;
+        }
+        return [newPost, ...prevPosts];
+      });
+    } else {
+      console.log("No subscription data received");
     }
   }, [subscriptionData]);
 
   const handleCreatePost = async () => {
     if (!title.trim() || !content.trim()) return;
-    await createPost({ variables: { title, content } });
+  
+    const newPost = { id: Date.now().toString(), title, content }; 
+    setPosts((prevPosts) => [newPost, ...prevPosts]); 
+  
+    try {
+      await createPost({ variables: { title, content } });
+    } catch (error) {
+      console.error("Error creating post:", error);
+      // Rollback the optimistic update if the mutation fails
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== newPost.id));
+    }
+  
     setTitle("");
     setContent("");
   };
